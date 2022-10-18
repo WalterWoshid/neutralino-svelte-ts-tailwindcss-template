@@ -1,0 +1,33 @@
+{
+  "extends": "@tsconfig/svelte/tsconfig.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "noEmit": true,
+    "moduleResolution": "Node",
+    "baseUrl": ".",
+    "allowJs": true,
+    "checkJs": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@root/*": ["./*"],
+      "@src/*": ["./src/*"],
+      "@public/*": ["./public/*"],
+      "@css/*": ["./src/css/*"],
+    },
+    "typeRoots": [
+      "node_modules/@types",
+      "src/ts/types"
+    ]
+  },
+  "include": [
+    "src/**/*",
+    ".eslintrc.ts",
+  ],
+  "exclude": [
+    "node_modules",
+    "src/libs"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "svelte3",
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "ignorePatterns": [
+    "node_modules",
+    "dist",
+    "bundle",
+    "src/libs"
+  ],
+  "overrides": [
+    {
+      "files": ["*.svelte"],
+      "processor": "svelte3/svelte3"
+    }
+  ],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "settings": {
+    "svelte3/typescript": true
+  },
+  "rules": {
+    // ESLint
+    "comma-dangle": ["warn", "always-multiline"],
+    "semi": ["warn", "always"],
+    "quotes": ["warn", "single"],
+    "eol-last": ["warn", "always"]
+  }
+}

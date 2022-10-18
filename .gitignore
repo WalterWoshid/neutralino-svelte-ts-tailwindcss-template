@@ -1,0 +1,21 @@
+# IDE's
+/.idea
+.DS_Store
+
+# Developer tools' files
+.lite_workspace.lua
+
+# Neutralinojs binaries and builds
+/bin
+/bundle
+/dist
+
+# Neutralinojs client (minified)
+neutralino.js
+
+# Neutralinojs related files
+.storage
+*.log
+
+# Svelte
+/node_modules
