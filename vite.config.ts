@@ -1,11 +1,12 @@
 import path from 'path';
 
 // Vite
-import { defineConfig, UserConfig } from 'vite';
+import { defineConfig, CSSOptions, UserConfig } from 'vite';
 
 // Svelte
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import sveltePreprocess from 'svelte-preprocess';
+import type { AutoPreprocessOptions } from 'svelte-preprocess/dist/types';
 
 // NeutralinoJS
 import neutralinoConfig from './neutralino.config.json';
@@ -23,40 +24,10 @@ import autoprefixer from 'autoprefixer';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  // Common options for both development and production
-  const commonOptions = {
-    plugins: [
-      typeScript({
-        tsconfig: 'tsconfig.json',
-      }),
-      svelte({
-        preprocess: sveltePreprocess(),
-      }),
-      // Auto import paths from tsconfig.json
-      tsConfigPaths({
-        // Allow all extensions
-        loose: true,
-      }),
-      createHtmlPlugin({
-        // Change default template
-        template: 'src/index.html',
-      }),
-    ],
-    css: {
-      postcss: {
-        plugins: [
-          tailwindcss({ config: 'tailwind.config.js' }),
-          autoprefixer(),
-        ],
-      },
-    },
-    root: '.',
-  } as UserConfig;
-
   // Development mode
   if (mode === 'development') {
     return {
-      ...commonOptions,
+      ...getCommonOptions(),
       server: {
         port: 8080,
       },
@@ -73,7 +44,7 @@ export default defineConfig(({ mode }) => {
     );
 
     return {
-      ...commonOptions,
+      ...getCommonOptions(),
       build: {
         // Build as a single file
         lib: {
@@ -92,3 +63,42 @@ export default defineConfig(({ mode }) => {
     throw new Error('Unknown mode');
   }
 });
+
+// Common options for both development and production
+function getCommonOptions(): UserConfig {
+  return {
+    plugins: [
+      typeScript({
+        tsconfig: 'tsconfig.json',
+      }),
+      svelte({
+        preprocess: sveltePreprocess({
+          postcss: getPostcssOptions(),
+        }),
+      }),
+      // Auto import paths from tsconfig.json
+      tsConfigPaths({
+        // Allow all extensions
+        loose: true,
+      }),
+      createHtmlPlugin({
+        // Change default template
+        template: 'src/index.html',
+      }),
+    ],
+    css: {
+      postcss: getPostcssOptions(),
+    },
+    root: '.',
+  };
+}
+
+// Common postcss options
+function getPostcssOptions(): AutoPreprocessOptions['postcss'] & CSSOptions['postcss'] {
+  return {
+    plugins: [
+      tailwindcss({ config: 'tailwind.config.js' }),
+      autoprefixer(),
+    ],
+  };
+}
